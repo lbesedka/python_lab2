@@ -182,7 +182,7 @@ def save_in_json(data: List[Information], filename: str):
     f.close()
 
 
-if len(sys.argv) >= 2:
+if len(sys.argv) != 1:
     parser = argparse.ArgumentParser(description='Make users\' valid information.')
     parser.add_argument('-input_file', nargs=1, type=str, help='input file name')
     parser.add_argument('-output_file', nargs=1, type=str, help='output file name')
@@ -195,14 +195,14 @@ else:
     output_file = 'result.txt'
 
 
-val = Validator([])
+validator = Validator([])
 
 with tqdm(range(100), colour='green', ncols=100) as progressbar:
     data = json.load(open(input_file, encoding='windows-1251'))
     progressbar.update(20)
-    val = Validator(data)
+    validator = Validator(data)
     progressbar.update(30)
-    res = val.parse()
+    res = validator.parse()
     progressbar.update(50)
     summary(res[0], output_file)
     save_in_json(res[1], 'correct_data.txt')
