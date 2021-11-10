@@ -123,7 +123,7 @@ class Validator:
         return False
 
     def check_worldview(self, worldview: str) -> bool:
-        pattern = "^.+(?:изм|анство)$"
+        pattern = "^.+(?:изм|анство|ам)$"
         if re.match(pattern, worldview):
             return True
         return False
