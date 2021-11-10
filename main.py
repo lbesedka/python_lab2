@@ -6,6 +6,29 @@ from tqdm import tqdm
 from typing import List
 
 class Information:
+    '''
+       Объект класса Information предоставляет запись с информацией о пользователе.
+       Attributes
+       ----------
+         email : str
+           email пользователя
+         height : str
+           рост пользователя
+         snils : str
+           снилс пользователя
+         passport_series : str
+           серия паспорта пользователя
+         occupation : str
+           род деятельности пользователя
+         age : str
+           возраст пользователя
+         academic_degree : str
+           степень образования
+         worldview : str
+           мировоззрение пользователя
+         address : str
+           адрес пользователя
+    '''
     email: str
     height: str
     snils: str
@@ -30,15 +53,30 @@ class Information:
 
 
 class Validator:
-
+    '''
+        Объект класса Validator представляет валидатор записей.
+        Нужен для проверки записей на корректность.
+        Attributes
+        ----------
+          notes : List[Entry]
+            Список записей
+    '''
     notes: List[Information]
 
     def __init__(self, notes: List[Information]):
+
         self.notes = []
         for i in notes:
             self.notes.append(Information(i))
 
     def parse_note(self, notes: Information) -> List[str]:
+        '''
+                Осуещствляет проверку корректности одной записи
+                Returns
+                -------
+                  List[str]:
+                    Список неверных ключей в записи
+        '''
         incorrect_keys = []
         if (self.check_email(notes.email) == 0):
             incorrect_keys.append('email')
@@ -62,6 +100,13 @@ class Validator:
         return incorrect_keys
 
     def parse(self) -> (List[List[str]], List[Information]):
+        '''
+                Осуществляет проверку корректности записей
+                Returns
+                -------
+                  (List[List[str]], List[Entry]):
+                    Пара: cписок списков неверных записей по названиям ключей и список верных записей
+        '''
         incorrect_n = []
         correct_n = []
         for i in self.notes:
@@ -73,24 +118,68 @@ class Validator:
         return (incorrect_n, correct_n)
 
     def check_email(self, email: str) -> bool:
+        '''
+                Проверяет корректность адреса электронной почты.
+                Parameters
+                ----------
+                  email : str
+                    Строка с проверяемым электронным адресом
+                Returns
+                -------
+                  bool:
+                    Булевый результат проверки на корректность
+        '''
         pattern = "^[^\\s@]+@([^\\s@.,]+\\.)+[^\\s@.,]{2,}$"
         if re.match(pattern, email):
             return True
         return False
 
     def check_snils(self, inn: str) -> bool:
+        '''
+                Проверяет корректность номера снила.
+                Parameters
+                ----------
+                   snils : str
+                    Строка с проверяемым электронным адресом
+                Returns
+                -------
+                   bool:
+                    Булевый результат проверки на корректность
+        '''
         pattern = '^\\d{11}$'
         if re.match(pattern, inn):
             return True
         return False
 
     def check_passport(self, passport: str) -> bool:
+        '''
+               Проверяет корретность серии паспорта.
+               Parameters
+               ----------
+                 passport : str
+                   Строка с проверяемой серией
+               Returns
+               -------
+                 bool:
+                   Булевый результат проверки на корректность
+        '''
         pattern = '^\\d{2} \\d{2}$'
         if re.match(pattern, passport):
             return True
         return False
 
     def check_height(self, height: str) -> bool:
+        '''
+               Проверяет корретность роста пользователя.
+               Parameters
+               ----------
+                 height : str
+                   Строка с проверяемой серией
+               Returns
+               -------
+                 bool:
+                   Булевый результат проверки на корректность
+        '''
         try:
             height_1 = float(height)
         except ValueError:
@@ -98,6 +187,17 @@ class Validator:
         return 1.1 < height_1 < 3
 
     def check_age(self, age: str) -> bool:
+        '''
+               Проверяет корректность возраста пользователя.
+               Parameters
+               ----------
+                 age : str
+                   Строка с проверяемым возрастом
+               Returns
+               -------
+                 bool:
+                   Булевый результат проверки на корректность
+        '''
         try:
             age_1 = int(age)
         except ValueError:
@@ -105,31 +205,82 @@ class Validator:
         return 18 <= age_1 < 110
 
     def check_address(self, address: str) -> bool:
+        '''
+                Проверяет корректность адреса пользователя.
+                Parameters
+                ----------
+                  address : str
+                    Строка с проверяемым адресом
+                Returns
+                -------
+                  bool:
+                    Булевый результат проверки на корректность
+        '''
         pattern = '^[\\wа-яА-Я\\s\\.\\d-]* \\d+$'
         if re.match(pattern, address):
             return True
         return False
 
     def check_occupation(self, occupation: str) -> bool:
+        '''
+                Проверяет корретность рода деятельности пользователя.
+                Parameters
+                ----------
+                  occupation : str
+                    Строка с проверяемой профессией
+                Returns
+                -------
+                  bool:
+                    Булевый результат проверки на корректность
+        '''
         pattern = '^[a-zA-Zа-яА-Я -]+$'
         if re.match(pattern, occupation):
             return True
         return False
 
     def check_degree(self, degree: str) -> bool:
+        '''
+               Проверяет корретность степени образования пользователя.
+               Parameters
+               ----------
+                 degree : str
+                   Строка с проверяемой степенью
+               Returns
+               -------
+                 bool:
+                   Булевый результат проверки на корректность
+        '''
         pattern = "Бакалавр|Кандидат наук|Специалист|Магистр|Доктор наук|"
         if re.match(pattern, degree):
             return True
         return False
 
     def check_worldview(self, worldview: str) -> bool:
-        pattern = "^.+(?:изм|анство)$"
+        '''
+                Проверяет корретность мировоззрения пользователя.
+                Parameters
+                ----------
+                  worldview : str
+                    Строка с проверяемым мировоззрением
+                Returns
+                -------
+                  bool:
+                    Булевый результат проверки на корректность
+        '''
+        pattern = "^.+(?:изм|анство|ам)$"
         if re.match(pattern, worldview):
             return True
         return False
 
 
 def summary(result: List[List[str]], filename: str = ''):
+    '''
+          Предоставляет итоговую информацию об ошибках в записях
+          Parameters
+          ----------
+            result : List[List[str]]
+              Список списков неверных записей по названиям ключей
+    '''
     all_errors_count = 0
     errors_count = {
         "email": 0,
@@ -160,7 +311,15 @@ def summary(result: List[List[str]], filename: str = ''):
                 file.write(key + '\t' + str(errors_count[key]) + '\n')
 
 def save_in_json(data: List[Information], filename: str):
-
+    '''
+          Предоставляет итоговую информацию о верных записях в формате json
+          Parameters
+          ----------
+            data : List[Entry]
+              Список верных записей
+            filename : str
+              Имя файла для записи
+      '''
     f = open(filename, 'w')
     count = 0
     for i in data:
